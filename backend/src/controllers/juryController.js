@@ -1,16 +1,9 @@
 const juryService = require('../services/juryService');
 const Project = require('../models/Project');
 
-/**
- * Controller pentru gestionarea endpoint-urilor legate de juriu
- * @class JuryController
- */
+// controller pentru juriu
 class JuryController {
-  /**
-   * Handler pentru asignarea aleatore a juriului unui proiect
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru asignare random jurat
   async assignJury(req, res) {
     try {
       const { id } = req.params;
@@ -19,7 +12,7 @@ class JuryController {
       if (!deliverableId) {
         return res.status(400).json({ error: 'deliverableId este obligatoriu' });
       }
-      // Verificare: doar proprietarul proiectului poate asigna juriul
+      // doar ownerul poate asigna juriul
       const project = await Project.findByPk(parseInt(id));
       if (!project) {
         return res.status(404).json({ error: 'Proiect negăsit' });
@@ -41,11 +34,7 @@ class JuryController {
     }
   }
 
-  /**
-   * Handler pentru obținerea proiectelor asignate evaluatorului curent
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru proiecte asignate evaluatorului
   async getAssignedProjects(req, res) {
     try {
       const projects = await juryService.getAssignedProjects(req.user.id);

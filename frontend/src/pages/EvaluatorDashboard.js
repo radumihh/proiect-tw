@@ -56,7 +56,7 @@ function EvaluatorDashboard() {
     <>
       <div className="header">
         <div className="header-content">
-          <h1>Evaluator Dashboard</h1>
+          <h1>Evaluate Projects</h1>
           <div className="header-info">
             <span>{user?.name}</span>
             <button onClick={logout}>Logout</button>
@@ -69,38 +69,62 @@ function EvaluatorDashboard() {
           <h2>Assigned Projects</h2>
           {projects.length === 0 ? (
             <div className="empty-state">
-              <p>No projects assigned yet.</p>
+              <p>You have no assigned projects to evaluate at this time.</p>
             </div>
           ) : (
             <ul className="list">
               {projects.map((proj) => (
                 <li key={`${proj.projectId}-${proj.deliverableId}`} className="list-item">
-                  <h3>{proj.projectTitle}</h3>
-                  <p>{proj.projectDescription}</p>
+                  <h3 style={{ marginTop: '0', marginBottom: '8px', fontSize: '18px' }}>
+                    {proj.projectTitle}
+                  </h3>
+                  <p style={{ marginBottom: '16px', color: 'var(--gray-600)' }}>
+                    {proj.projectDescription}
+                  </p>
                   <div className="info-grid">
                     <div className="info-row">
-                      <span className="info-label">Deliverable:</span>
+                      <span className="info-label">Deliverable</span>
                       <span className="info-value">{proj.deliverableName}</span>
                     </div>
                     <div className="info-row">
-                      <span className="info-label">Deadline:</span>
-                      <span className="info-value">{new Date(proj.deadline).toLocaleString()}</span>
+                      <span className="info-label">Deadline</span>
+                      <span className="info-value">{new Date(proj.deadline).toLocaleString('ro-RO', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}</span>
                     </div>
                     {proj.videoUrl && (
                       <div className="info-row">
-                        <span className="info-label">Video:</span>
+                        <span className="info-label">Video Demo</span>
                         <span className="info-value">
                           <a href={proj.videoUrl} target="_blank" rel="noopener noreferrer">
-                            View Demo
+                            Watch Video
                           </a>
                         </span>
                       </div>
                     )}
                   </div>
 
-                  <div style={{ marginTop: '15px' }}>
-                    <label>Grade (1.00 - 10.00):</label>
-                    <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                  <div style={{ 
+                    marginTop: '20px', 
+                    padding: '20px', 
+                    background: 'var(--primary-light)', 
+                    borderRadius: 'var(--radius)',
+                    border: '1px solid var(--primary)'
+                  }}>
+                    <label style={{ 
+                      display: 'block', 
+                      marginBottom: '12px', 
+                      fontWeight: '700', 
+                      color: 'var(--gray-900)',
+                      fontSize: '14px'
+                    }}>
+                      Submit Grade (1.00 - 10.00)
+                    </label>
+                    <div style={{ display: 'flex', gap: '12px' }}>
                       <input
                         type="number"
                         min="1"
@@ -109,9 +133,13 @@ function EvaluatorDashboard() {
                         className="grade-input"
                         value={gradeInputs[`${proj.projectId}-${proj.deliverableId}`] || ''}
                         onChange={(e) => handleGradeChange(proj.projectId, proj.deliverableId, e.target.value)}
-                        placeholder="e.g. 8.75"
+                        placeholder="8.50"
+                        style={{ flex: '1', maxWidth: '180px' }}
                       />
-                      <button onClick={() => handleSubmitGrade(proj.projectId, proj.deliverableId)}>
+                      <button 
+                        onClick={() => handleSubmitGrade(proj.projectId, proj.deliverableId)}
+                        style={{ padding: '11px 24px' }}
+                      >
                         Submit Grade
                       </button>
                     </div>

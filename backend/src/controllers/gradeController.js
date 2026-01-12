@@ -1,15 +1,8 @@
 const gradeService = require('../services/gradeService');
 
-/**
- * Controller pentru gestionarea endpoint-urilor legate de note
- * @class GradeController
- */
+// controller pentru note
 class GradeController {
-  /**
-   * Handler pentru trimiterea unei note noi
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru trimitere nota noua
   async submitGrade(req, res) {
     try {
       const { projectId, deliverableId, value } = req.body;
@@ -40,11 +33,7 @@ class GradeController {
     }
   }
 
-  /**
-   * Handler pentru actualizarea unei note existente
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru update nota existenta
   async updateGrade(req, res) {
     try {
       const { id } = req.params;
@@ -73,11 +62,7 @@ class GradeController {
     }
   }
 
-  /**
-   * Handler pentru obținerea sumarului de note al unui proiect (doar profesori)
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru sumar note proiect, doar profesori
   async getGradesSummary(req, res) {
     try {
       const { id } = req.params;

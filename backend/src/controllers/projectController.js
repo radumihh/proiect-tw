@@ -1,15 +1,8 @@
 const projectService = require('../services/projectService');
 
-/**
- * Controller pentru gestionarea endpoint-urilor legate de proiecte
- * @class ProjectController
- */
+// controller pentru proiecte
 class ProjectController {
-  /**
-   * Handler pentru crearea unui proiect nou
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru creare proiect nou
   async createProject(req, res) {
     try {
       const { title, description } = req.body;
@@ -33,11 +26,7 @@ class ProjectController {
     }
   }
 
-  /**
-   * Handler pentru obținerea listei de proiecte
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru lista de proiecte
   async getAllProjects(req, res) {
     try {
       const projects = await projectService.getAllProjects(
@@ -51,11 +40,7 @@ class ProjectController {
     }
   }
 
-  /**
-   * Handler pentru obținerea detaliilor unui proiect specific
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru detalii proiect specific
   async getProjectById(req, res) {
     try {
       const { id } = req.params;

@@ -17,7 +17,8 @@ function StudentDashboard() {
   const [deliverableForm, setDeliverableForm] = useState({
     name: '',
     deadline: '',
-    videoUrl: ''
+    videoUrl: '',
+    weight: ''
   });
 
   useEffect(() => {
@@ -41,6 +42,15 @@ function StudentDashboard() {
     }
   };
 
+  // calculeaza total weight si ramasa
+  const calculateWeights = () => {
+    const totalUsed = deliverables.reduce((sum, d) => {
+      return sum + (d.weight ? parseFloat(d.weight) : 0);
+    }, 0);
+    const remaining = 100 - totalUsed;
+    return { totalUsed, remaining };
+  };
+
   const handleCreateProject = async (e) => {
     e.preventDefault();
     try {
@@ -57,15 +67,24 @@ function StudentDashboard() {
   const handleCreateDeliverable = async (e) => {
     e.preventDefault();
     try {
+      let weightValue;
+      if (deliverableForm.weight) {
+        weightValue = parseFloat(deliverableForm.weight);
+      } else {
+        const { remaining } = calculateWeights();
+        weightValue = remaining;
+      }
+
       await deliverableService.create(
         project.id,
         deliverableForm.name,
         deliverableForm.deadline,
-        deliverableForm.videoUrl
+        deliverableForm.videoUrl,
+        weightValue
       );
       toast.success('Deliverable created successfully!');
       setShowCreateDeliverable(false);
-      setDeliverableForm({ name: '', deadline: '', videoUrl: '' });
+      setDeliverableForm({ name: '', deadline: '', videoUrl: '', weight: '' });
       loadData();
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to create deliverable');
@@ -88,7 +107,7 @@ function StudentDashboard() {
     <>
       <div className="header">
         <div className="header-content">
-          <h1>Student Dashboard</h1>
+          <h1>My Project</h1>
           <div className="header-info">
             <span>{user?.name}</span>
             <button onClick={logout}>Logout</button>
@@ -99,12 +118,14 @@ function StudentDashboard() {
       <div className="container">
         {!project ? (
           <div className="card">
-            <h2>My Project</h2>
+            <h2>Create Your Project</h2>
             {!showCreateProject ? (
-              <>
-                <p>You don't have a project yet.</p>
+              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                <p style={{ marginBottom: '24px', color: 'var(--gray-600)', fontSize: '15px' }}>
+                  You haven't created a project yet. Get started by creating your first project.
+                </p>
                 <button onClick={() => setShowCreateProject(true)}>Create Project</button>
-              </>
+              </div>
             ) : (
               <form onSubmit={handleCreateProject}>
                 <div className="form-group">
@@ -135,16 +156,32 @@ function StudentDashboard() {
         ) : (
           <>
             <div className="card">
-              <h2>{project.title}</h2>
-              <p>{project.description}</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div>
+                  <h2 style={{ marginBottom: '8px', paddingBottom: '0', border: 'none' }}>{project.title}</h2>
+                  <p style={{ margin: '0', color: 'var(--gray-600)' }}>{project.description}</p>
+                </div>
+              </div>
               <div className="info-grid">
                 <div className="info-row">
-                  <span className="info-label">Project ID:</span>
+                  <span className="info-label">Project ID</span>
                   <span className="info-value">{project.id}</span>
                 </div>
                 <div className="info-row">
-                  <span className="info-label">Created:</span>
-                  <span className="info-value">{new Date(project.createdAt).toLocaleDateString()}</span>
+                  <span className="info-label">Created</span>
+                  <span className="info-value">{new Date(project.createdAt).toLocaleDateString('ro-RO', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Deliverables</span>
+                  <span className="info-value">{deliverables.length}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Total Weight</span>
+                  <span className="info-value">{calculateWeights().totalUsed.toFixed(2)}%</span>
                 </div>
               </div>
             </div>
@@ -152,7 +189,9 @@ function StudentDashboard() {
             <div className="card">
               <h2>Deliverables</h2>
               {deliverables.length === 0 ? (
-                <p>No deliverables yet.</p>
+                <div className="empty-state">
+                  <p>No deliverables added yet. Create your first deliverable to get started.</p>
+                </div>
               ) : (
                 <ul className="list">
                   {deliverables.map((deliv) => (
@@ -167,15 +206,27 @@ function StudentDashboard() {
                       </div>
                       <div className="info-grid">
                         <div className="info-row">
-                          <span className="info-label">Deadline:</span>
-                          <span className="info-value">{new Date(deliv.deadline).toLocaleString()}</span>
+                          <span className="info-label">Deadline</span>
+                          <span className="info-value">{new Date(deliv.deadline).toLocaleString('ro-RO', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}</span>
+                        </div>
+                        <div className="info-row">
+                          <span className="info-label">Weight</span>
+                          <span className="info-value">
+                            {deliv.weight ? `${parseFloat(deliv.weight).toFixed(2)}%` : 'Not set'}
+                          </span>
                         </div>
                         {deliv.videoUrl && (
                           <div className="info-row">
-                            <span className="info-label">Video:</span>
+                            <span className="info-label">Video</span>
                             <span className="info-value">
                               <a href={deliv.videoUrl} target="_blank" rel="noopener noreferrer">
-                                View
+                                View Demo
                               </a>
                             </span>
                           </div>
@@ -198,9 +249,48 @@ function StudentDashboard() {
               )}
 
               {!showCreateDeliverable ? (
-                <button onClick={() => setShowCreateDeliverable(true)}>Add Deliverable</button>
+                <>
+                  {calculateWeights().remaining > 0 && (
+                    <div style={{ 
+                      marginTop: '24px', 
+                      padding: '16px', 
+                      background: 'var(--primary-light)', 
+                      borderRadius: 'var(--radius)',
+                      border: '1px solid var(--primary)',
+                      textAlign: 'center'
+                    }}>
+                      <p style={{ margin: '0', color: 'var(--primary)', fontWeight: '600', fontSize: '14px' }}>
+                        Available weight: {calculateWeights().remaining.toFixed(2)}% 
+                        {deliverables.length === 0 && ' — Add your first deliverable'}
+                      </p>
+                    </div>
+                  )}
+                  <button 
+                    style={{ marginTop: '20px', width: '100%' }}
+                    onClick={() => {
+                      const { remaining } = calculateWeights();
+                      setDeliverableForm({ ...deliverableForm, weight: remaining > 0 ? remaining.toFixed(2) : '' });
+                      setShowCreateDeliverable(true);
+                    }}
+                    disabled={project && calculateWeights().remaining <= 0}
+                  >
+                    Add Deliverable
+                  </button>
+                  {project && calculateWeights().remaining <= 0 && (
+                    <p style={{ color: 'var(--danger)', fontSize: '14px', marginTop: '12px', textAlign: 'center', fontWeight: '500' }}>
+                      Total weight is 100%. Edit existing deliverables to redistribute weight.
+                    </p>
+                  )}
+                </>
               ) : (
-                <form onSubmit={handleCreateDeliverable} style={{ marginTop: '20px' }}>
+                <form onSubmit={handleCreateDeliverable} style={{ 
+                  marginTop: '24px', 
+                  padding: '24px', 
+                  background: 'var(--gray-50)', 
+                  borderRadius: 'var(--radius-lg)',
+                  border: '1px solid var(--gray-200)'
+                }}>
+                  <h3 style={{ marginTop: '0', marginBottom: '20px', color: 'var(--gray-900)' }}>New Deliverable</h3>
                   <div className="form-group">
                     <label>Name</label>
                     <input
@@ -226,13 +316,33 @@ function StudentDashboard() {
                       onChange={(e) => setDeliverableForm({ ...deliverableForm, videoUrl: e.target.value })}
                     />
                   </div>
+                  <div className="form-group">
+                    <label>Weight (%) — Available: {calculateWeights().remaining.toFixed(2)}%</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0.01"
+                      max={calculateWeights().remaining}
+                      value={deliverableForm.weight}
+                      onChange={(e) => setDeliverableForm({ ...deliverableForm, weight: e.target.value })}
+                      placeholder={`Default: ${calculateWeights().remaining.toFixed(2)}%`}
+                    />
+                    <small style={{ color: 'var(--gray-600)', fontSize: '13px' }}>
+                      Leave empty to use all remaining weight ({calculateWeights().remaining.toFixed(2)}%)
+                    </small>
+                  </div>
                   <div className="actions">
-                    <button type="submit">Create</button>
+                    <button type="submit">Create Deliverable</button>
                     <button type="button" className="secondary" onClick={() => setShowCreateDeliverable(false)}>
                       Cancel
                     </button>
                   </div>
                 </form>
+              )}
+              {project && calculateWeights().remaining <= 0 && !showCreateDeliverable && (
+                <p style={{ color: '#dc3545', fontSize: '0.9rem', marginTop: '10px' }}>
+                  Total weight is complete (100%). Edit existing deliverables to redistribute weight before adding more.
+                </p>
               )}
             </div>
           </>

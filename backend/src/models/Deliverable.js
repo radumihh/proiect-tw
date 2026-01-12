@@ -1,11 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
-/**
- * Model Sequelize pentru livrabilele parțiale ale proiectelor
- * Reprezintă tabelul 'deliverables' din baza de date
- * Fiecare livrabil are un deadline și poate avea un video demonstrativ
- */
+// model pentru deliverables ale proiectelor
+// fiecare are deadline si poate avea video
 const Deliverable = sequelize.define('Deliverable', {
   id: {
     type: DataTypes.INTEGER,

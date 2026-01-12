@@ -1,15 +1,8 @@
 const deliverableService = require('../services/deliverableService');
 
-/**
- * Controller pentru gestionarea endpoint-urilor legate de livrabile
- * @class DeliverableController
- */
+// controller pentru deliverables
 class DeliverableController {
-  /**
-   * Handler pentru crearea unui livrabil nou
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru creare deliverable nou
   async createDeliverable(req, res) {
     try {
       const { id } = req.params;
@@ -37,11 +30,7 @@ class DeliverableController {
     }
   }
 
-  /**
-   * Handler pentru obținerea listei de livrabile ale unui proiect
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru lista deliverables ale unui proiect
   async getDeliverables(req, res) {
     try {
       const { id } = req.params;

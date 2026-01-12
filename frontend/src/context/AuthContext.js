@@ -1,16 +1,11 @@
-/**
- * Context React pentru gestionarea starii de autentificare globală
- * Oferă funcționalități de login, register, logout și acces la utilizatorul curent
- */
+// context react pentru auth global
+// login, register, logout si user curent
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authService } from '../services/apiService';
 
 const AuthContext = createContext(null);
 
-/**
- * Provider component pentru AuthContext
- * Trebuie să învelească întreaga aplicație
- */
+// provider pentru authcontext
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,11 +41,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-/**
- * Custom hook pentru accesarea contextului de autentificare
- * @returns {Object} Context cu user, login, register, logout, loading
- * @throws {Error} Dacă este folosit în afara AuthProvider
- */
+// hook pentru access la auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

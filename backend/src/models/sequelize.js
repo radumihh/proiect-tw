@@ -1,10 +1,10 @@
 const { Sequelize } = require('sequelize');
 const mysql = require('mysql2/promise');
 
-// Pool de conexiuni MySQL nativ pentru query-uri directe
+// pool conexiuni mysql
 const pool = mysql.createPool({
-  host: "51.20.56.120", // IP-ul public al VM-ului
-  port: 3306,            // portul MySQL
+  host: "51.20.56.120",
+  port: 3306,
   user: "radu",
   password: "bubu2004",
   database: "education_db",
@@ -12,7 +12,7 @@ const pool = mysql.createPool({
   connectionLimit: 10
 });
 
-// Test conexiune
+// test conexiune
 async function testConnection() {
   try {
     const [rows] = await pool.query("SELECT 1");
@@ -24,7 +24,7 @@ async function testConnection() {
 
 testConnection();
 
-// Configurare Sequelize cu aceleași credențiale
+// config sequelize
 const sequelize = new Sequelize(
   "education_db",
   "radu",
@@ -43,7 +43,7 @@ const sequelize = new Sequelize(
   }
 );
 
-// Atașăm pool-ul la sequelize pentru a-l putea folosi
+// attach pool la sequelize
 sequelize.pool = pool;
 
 module.exports = sequelize;

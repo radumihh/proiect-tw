@@ -2,20 +2,10 @@ const Project = require('../models/Project');
 const User = require('../models/User');
 const Deliverable = require('../models/Deliverable');
 
-/**
- * Serviciu pentru gestionarea proiectelor studenților
- * @class ProjectService
- */
+// service pentru proiecte
 class ProjectService {
-  /**
-   * Creează un proiect nou pentru un student
-   * Un student poate avea doar un singur proiect
-   * @param {number} ownerId - ID-ul studentului care creează proiectul
-   * @param {string} title - Titlul proiectului
-   * @param {string} description - Descrierea proiectului
-   * @returns {Promise<Object>} Proiectul creat
-   * @throws {Error} Dacă utilizatorul nu este student sau are deja un proiect
-   */
+  // creeaza proiect nou pentru student
+  // un student poate avea doar un proiect
   async createProject(ownerId, title, description) {
     const user = await User.findByPk(ownerId);
     if (!user || user.role !== 'student') {
@@ -36,13 +26,8 @@ class ProjectService {
     return project;
   }
 
-  /**
-   * Returnează lista de proiecte în funcție de rolul utilizatorului
-   * Profesorii văd toate proiectele, studenții văd doar proiectul lor
-   * @param {number} userId - ID-ul utilizatorului curent
-   * @param {string} userRole - Rolul utilizatorului ('student' sau 'professor')
-   * @returns {Promise<Array>} Lista de proiecte
-   */
+  // ia lista de proiecte dupa rol
+  // profesorii vad toate, studentii doar al lor
   async getAllProjects(userId, userRole) {
     if (userRole === 'professor') {
       return await Project.findAll({
@@ -59,15 +44,8 @@ class ProjectService {
     });
   }
 
-  /**
-   * Returnează detaliile unui proiect dacă utilizatorul are acces
-   * Accesul este permis pentru: proprietar, profesor, sau evaluator asigrenat
-   * @param {number} projectId - ID-ul proiectului
-   * @param {number} userId - ID-ul utilizatorului curent
-   * @param {string} userRole - Rolul utilizatorului
-   * @returns {Promise<Object>} Detaliile proiectului
-   * @throws {Error} Dacă proiectul nu există sau utilizatorul nu are acces
-   */
+  // ia detalii proiect daca userul are acces
+  // acces: owner, profesor sau evaluator asignat
   async getProjectById(projectId, userId, userRole) {
     const project = await Project.findByPk(projectId, {
       include: [{

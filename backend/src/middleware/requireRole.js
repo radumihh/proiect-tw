@@ -1,9 +1,5 @@
-/**
- * Middleware factory pentru verificarea rolului utilizatorului
- * Restrictționează accesul la endpoint-uri pe baza rolurilor permise
- * @param {...string} allowedRoles - Lista de roluri permise
- * @returns {Function} Middleware Express
- */
+// middleware pentru verificare rol user
+// restrictioneaza access pe baza de roluri
 function requireRole(...allowedRoles) {
   return (req, res, next) => {
     if (!req.user) {

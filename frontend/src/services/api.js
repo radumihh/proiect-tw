@@ -1,12 +1,10 @@
-/**
- * Instanță Axios configurată pentru comunicarea cu backend-ul
- * Include interceptori pentru token-ul JWT și gestionarea erorilor 401
- */
+// axios config pentru backend
+// interceptori pentru jwt si 401
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
-// Creare instanță axios cu configurare de bază
+// creare instanta axios
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -14,7 +12,7 @@ const api = axios.create({
   }
 });
 
-// Interceptor pentru adăugarea automată a token-ului JWT la fiecare request
+// interceptor pentru add token jwt automat
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -23,7 +21,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor pentru gestionarea erorilor de autentificare (401)
+// interceptor pentru erori auth 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -1,10 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
-/**
- * Model Sequelize pentru utilizatori (studenți și profesori)
- * Reprezintă tabelul 'users' din baza de date
- */
+// model pentru useri, studenti si profesori
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.INTEGER,

@@ -1,11 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
-/**
- * Model Sequelize pentru notele acordate de evaluatori
- * Reprezintă tabelul 'grades' din baza de date
- * Notele sunt anonime și între 1.00 și 10.00 cu 2 zecimale
- */
+// model pentru note acordate de evaluatori
+// notele sunt anonime intre 1.00 si 10.00
 const Grade = sequelize.define('Grade', {
   id: {
     type: DataTypes.INTEGER,

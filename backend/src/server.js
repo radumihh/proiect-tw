@@ -1,22 +1,11 @@
-/**
- * Entry point pentru serverul Express
- * Rulează: npm start sau npm run dev
- * 
- * Acest script:
- * 1. Verifică conexiunea la baza de date MySQL
- * 2. Pornește serverul HTTP pe portul specificat
- * 3. Afișează lista de endpoint-uri disponibile
- * 4. Gestionează închiderea graceful (SIGINT)
- */
+// entry point pentru server
+// verifica db, porneste server, afiseaza endpoints
 const app = require('./app');
 const sequelize = require('./models/index');
 
 const PORT = process.env.PORT || 3000;
 
-/**
- * Funcție pentru pornirea serverului
- * Verifică conexiunea la DB înainte de a porni serverul
- */
+// functie pornire server, verifica db mai intai
 async function startServer() {
   try {
     await sequelize.authenticate();
@@ -44,7 +33,7 @@ async function startServer() {
   }
 }
 
-// Handler pentru închidere graceful (Ctrl+C)
+// handler pentru ctrl+c
 process.on('SIGINT', async () => {
   console.log('\n\nÎnchidere graceful...');
   await sequelize.close();

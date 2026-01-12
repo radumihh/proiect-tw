@@ -1,10 +1,5 @@
-/**
- * Script de migrare pentru crearea tabelelor în baza de date
- * Rulează: npm run migrate
- * 
- * Acest script creează toate tabelele necesare fără a șterge datele existente
- * Folosit pentru inițializarea inițială a bazei de date
- */
+// script migrare tabele
+// creeaza tabelele fara sa stearga date existente
 const sequelize = require('./models/index');
 const User = require('./models/User');
 const Project = require('./models/Project');
@@ -12,10 +7,7 @@ const Deliverable = require('./models/Deliverable');
 const JuryAssignment = require('./models/JuryAssignment');
 const Grade = require('./models/Grade');
 
-/**
- * Funcție principală de migrare
- * Creează toate tabelele în baza de date folosind Sequelize sync
- */
+// functie migrare, creeaza tabelele cu sequelize sync
 async function migrate() {
   try {
     console.log('Conectare la baza de date MySQL...');

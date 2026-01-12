@@ -1,11 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
-/**
- * Model Sequelize pentru proiecte
- * Reprezintă tabelul 'projects' din baza de date
- * Fiecare student poate avea un singur proiect
- */
+// model pentru proiecte
+// fiecare student poate avea un singur proiect
 const Project = sequelize.define('Project', {
   id: {
     type: DataTypes.INTEGER,

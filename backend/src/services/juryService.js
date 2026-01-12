@@ -4,20 +4,10 @@ const User = require('../models/User');
 const Deliverable = require('../models/Deliverable');
 const { selectRandomEvaluators } = require('../utils/randomSelector');
 
-/**
- * Serviciu pentru gestionarea asignării aleatoare a juriu
- * @class JuryService
- */
+// service pentru asignare jurat
 class JuryService {
-  /**
-   * Asignează aleatoriu evaluatori pentru un livrabil al unui proiect
-   * Exclude proprietarul proiectului din selecție
-   * @param {number} projectId - ID-ul proiectului
-   * @param {number} deliverableId - ID-ul livrabilului
-   * @param {number} evaluatorCount - Numărul de evaluatori de asignat (implicit 5)
-   * @returns {Promise<Object>} Rezumat cu numărul de evaluatori asignați
-   * @throws {Error} Dacă proiectul/livrabilul nu există sau juriul a fost deja asignat
-   */
+  // asigneaza random evaluatori pentru un deliverable
+  // exclude ownerul din selectie
   async assignJury(projectId, deliverableId, evaluatorCount = 5) {
     const project = await Project.findByPk(projectId);
     if (!project) {
@@ -69,11 +59,7 @@ class JuryService {
     };
   }
 
-  /**
-   * Returnează toate proiectele asignate unui evaluator
-   * @param {number} evaluatorId - ID-ul evaluatorului
-   * @returns {Promise<Array>} Lista de proiecte cu detalii despre livrabile
-   */
+  // ia toate proiectele asignate unui evaluator
   async getAssignedProjects(evaluatorId) {
     const Grade = require('../models/Grade');
     

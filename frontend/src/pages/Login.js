@@ -32,15 +32,18 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h1>Login</h1>
+        <h1>Sign In</h1>
+        <p>Enter your credentials to access your account</p>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label>Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
               required
+              autoComplete="email"
             />
           </div>
           <div className="form-group">
@@ -49,15 +52,17 @@ function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
               required
+              autoComplete="current-password"
             />
           </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Loading...' : 'Login'}
+          <button type="submit" disabled={loading} style={{ width: '100%', marginTop: '8px' }}>
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
         <div className="auth-links">
-          Don't have an account? <Link to="/register">Register</Link>
+          Don't have an account? <Link to="/register">Create one</Link>
         </div>
       </div>
     </div>

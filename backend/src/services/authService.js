@@ -2,20 +2,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-/**
- * Serviciu pentru gestionarea autentificării utilizatorilor
- * @class AuthService
- */
+// service pentru login si register
 class AuthService {
-  /**
-   * Înregistrează un utilizator nou în sistem
-   * @param {string} name - Numele complet al utilizatorului
-   * @param {string} email - Adresa de email unică
-   * @param {string} password - Parola în text clar (va fi hash-uită)
-   * @param {string} role - Rolul utilizatorului ('student' sau 'professor')
-   * @returns {Promise<Object>} Datele utilizatorului creat (fără parolă)
-   * @throws {Error} Dacă email-ul este deja înregistrat sau rolul este invalid
-   */
+  // inregistreaza user nou
+  // hashuieste parola si salveaza in db
   async register(name, email, password, role = 'student') {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -43,13 +33,7 @@ class AuthService {
     };
   }
 
-  /**
-   * Autentifică un utilizator și generează token JWT
-   * @param {string} email - Adresa de email a utilizatorului
-   * @param {string} password - Parola în text clar
-   * @returns {Promise<Object>} Obiect cu token JWT și datele utilizatorului
-   * @throws {Error} Dacă credențialele sunt invalide
-   */
+  // login user, verifica parola si genereaza token jwt
   async login(email, password) {
     const user = await User.findOne({ where: { email } });
     if (!user) {

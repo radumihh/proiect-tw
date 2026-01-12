@@ -244,26 +244,13 @@ function UnifiedStudentDashboard() {
                     </div>
                   </div>
                   
-                  {/* Project Average Grade */}
                   {projectGradeSummary && projectGradeSummary.projectAverage !== null && (
-                    <div style={{ 
-                      backgroundColor: '#e3f2fd', 
-                      padding: '15px', 
-                      borderRadius: '8px', 
-                      marginTop: '20px',
-                      textAlign: 'center'
-                    }}>
-                      <h3 style={{ marginTop: 0, marginBottom: '8px', color: '#1565c0' }}>
-                        Your Project Average
-                      </h3>
-                      <div style={{ 
-                        fontSize: '36px', 
-                        fontWeight: 'bold', 
-                        color: '#0d47a1' 
-                      }}>
+                    <div className="project-average">
+                      <h3>Your Project Average</h3>
+                      <div className="project-average-value">
                         {projectGradeSummary.projectAverage.toFixed(2)}
                       </div>
-                      <small style={{ color: '#1976d2', fontSize: '0.85rem' }}>
+                      <small>
                         {projectGradeSummary.deliverables.every(d => d.weight !== null) 
                           ? 'Weighted average based on deliverable percentages' 
                           : 'Average of all deliverables'}
@@ -275,7 +262,9 @@ function UnifiedStudentDashboard() {
                 <div className="card">
                   <h2>Deliverables</h2>
                   {deliverables.length === 0 ? (
-                    <p>No deliverables yet.</p>
+                    <div className="empty-state">
+                      <p>No deliverables yet.</p>
+                    </div>
                   ) : (
                     <ul className="list">
                       {deliverables.map((deliv) => (
@@ -327,11 +316,16 @@ function UnifiedStudentDashboard() {
                   )}
 
                   {!showCreateDeliverable ? (
-                    <button onClick={() => {
-                      const { remaining } = calculateWeights();
-                      setDeliverableForm({ ...deliverableForm, weight: remaining > 0 ? remaining.toFixed(2) : '' });
-                      setShowCreateDeliverable(true);
-                    }}>Add Deliverable</button>
+                    <button 
+                      onClick={() => {
+                        const { remaining } = calculateWeights();
+                        setDeliverableForm({ ...deliverableForm, weight: remaining > 0 ? remaining.toFixed(2) : '' });
+                        setShowCreateDeliverable(true);
+                      }}
+                      disabled={calculateWeights().remaining <= 0}
+                    >
+                      Add Deliverable
+                    </button>
                   ) : (
                     <form onSubmit={handleCreateDeliverable} style={{ marginTop: '20px' }}>
                       <div className="form-group">
@@ -381,6 +375,11 @@ function UnifiedStudentDashboard() {
                         </button>
                       </div>
                     </form>
+                  )}
+                  {calculateWeights().remaining <= 0 && !showCreateDeliverable && (
+                    <p style={{ color: '#dc3545', fontSize: '0.9rem', marginTop: '10px' }}>
+                      Total weight is complete (100%). Edit existing deliverables to redistribute weight before adding more.
+                    </p>
                   )}
                 </div>
               </>

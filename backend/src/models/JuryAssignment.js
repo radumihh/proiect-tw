@@ -1,11 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
-/**
- * Model Sequelize pentru asignările de evaluatori (juriu)
- * Reprezintă tabelul 'jury_assignments' din baza de date
- * Stochează care evaluatori sunt asignați să evalueze care proiecte/livrabile
- */
+// model pentru asignari evaluatori Stochează care evaluatori sunt asignați să evalueze care proiecte/livrabile
+ 
 const JuryAssignment = sequelize.define('JuryAssignment', {
   id: {
     type: DataTypes.INTEGER,

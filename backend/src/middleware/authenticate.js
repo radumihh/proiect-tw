@@ -1,12 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-/**
- * Middleware pentru autentificarea utilizatorilor folosind JWT
- * Verifică prezența și validitatea token-ului din header-ul Authorization
- * @param {Object} req - Express request
- * @param {Object} res - Express response
- * @param {Function} next - Express next middleware
- */
+// middleware pentru auth cu jwt
+// verifica token din authorization header
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
   

@@ -1,15 +1,8 @@
 const authService = require('../services/authService');
 
-/**
- * Controller pentru gestionarea endpoint-urilor de autentificare
- * @class AuthController
- */
+// controller pentru auth
 class AuthController {
-  /**
-   * Handler pentru înregistrarea unui utilizator nou
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru register user nou
   async register(req, res) {
     try {
       const { name, email, password, role } = req.body;
@@ -29,11 +22,7 @@ class AuthController {
     }
   }
 
-  /**
-   * Handler pentru autentificarea unui utilizator existent
-   * @param {Object} req - Express request
-   * @param {Object} res - Express response
-   */
+  // handler pentru login user existent
   async login(req, res) {
     try {
       const { email, password } = req.body;

@@ -1,10 +1,6 @@
-/**
- * Calculează media notelor omitând cea mai mică și cea mai mare notă
- * Conform cerințelor: nota totală se calculează omitând cea mai mare și cea mai mică notă
- * Dacă sunt mai puțin de 3 note, calculează media simplă
- * @param {Array<Object>} grades - Array de obiecte note cu proprietatea 'value'
- * @returns {number|null} Media calculată cu 2 zecimale sau null dacă nu sunt note
- */
+// calculeaza media notelor, omite min si max
+// daca sunt mai putin de 3 note face media simpla
+// returneaza media cu 2 zecimale sau null
 function calculateAverageGrade(grades) {
   if (!grades || grades.length === 0) {
     return null;

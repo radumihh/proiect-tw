@@ -4,21 +4,10 @@ const Deliverable = require('../models/Deliverable');
 const Project = require('../models/Project');
 const { calculateAverageGrade } = require('../utils/gradeCalculator');
 
-/**
- * Serviciu pentru gestionarea notelor acordate de evaluatori
- * @class GradeService
- */
+// service pentru note
 class GradeService {
-  /**
-   * Trimite o notă pentru un proiect
-   * Verifică dacă evaluatorul este asignat și deadline-ul nu a trecut
-   * @param {number} evaluatorId - ID-ul evaluatorului
-   * @param {number} projectId - ID-ul proiectului
-   * @param {number} deliverableId - ID-ul livrabilului
-   * @param {number} value - Valoarea notei (1.00 - 10.00)
-   * @returns {Promise<Object>} Nota creată
-   * @throws {Error} Dacă evaluatorul nu este asignat, deadline-ul a trecut sau nota este invalidă
-   */
+  // trimite nota pentru un proiect
+  // verifica daca evaluatorul e asignat si deadline nu a trecut
   async submitGrade(evaluatorId, projectId, deliverableId, value) {
     const assignment = await JuryAssignment.findOne({
       where: { 
@@ -68,15 +57,8 @@ class GradeService {
     return grade;
   }
 
-  /**
-   * Actualizează o notă existentă
-   * Doar evaluatorul care a creat nota o poate modifica și doar înainte de deadline
-   * @param {number} gradeId - ID-ul notei
-   * @param {number} evaluatorId - ID-ul evaluatorului
-   * @param {number} newValue - Noua valoare a notei (1.00 - 10.00)
-   * @returns {Promise<Object>} Nota actualizată
-   * @throws {Error} Dacă nota nu există, evaluatorul nu are permisiune sau deadline-ul a trecut
-   */
+  // update nota existenta
+  // doar evaluatorul care a creat-o o poate modifica inainte de deadline
   async updateGrade(gradeId, evaluatorId, newValue) {
     const grade = await Grade.findByPk(gradeId);
 
@@ -108,13 +90,8 @@ class GradeService {
     return grade;
   }
 
-  /**
-   * Returnează sumar anonim al notelor pentru un proiect
-   * Omite identitatea evaluatorilor pentru a menține anonimatul
-   * @param {number} projectId - ID-ul proiectului
-   * @returns {Promise<Object>} Sumar cu medii calculate și note anonime
-   * @throws {Error} Dacă proiectul nu există
-   */
+  // ia sumar anonim note pentru un proiect
+  // omite identitatea evaluatorilor
   async getGradesSummary(projectId) {
     const project = await Project.findByPk(projectId);
     if (!project) {
@@ -152,26 +129,32 @@ class GradeService {
       })
     );
 
-    // Calculate overall project weighted average
+    // calculeaza media ponderata pentru proiect
     let projectAverage = null;
     const deliverablesWithGrades = summary.filter(d => d.averageGrade !== null);
     
     if (deliverablesWithGrades.length > 0) {
-      // Check if all deliverables have weights
-      const allHaveWeights = deliverablesWithGrades.every(d => d.weight !== null);
+      // verifica daca toate deliverables au weights sau niciuna
+      const allProjectDeliverables = deliverables;
+      const allHaveWeights = allProjectDeliverables.every(d => d.weight !== null);
       
-      if (allHaveWeights) {
-        // Calculate weighted average
+      if (allHaveWeights && deliverablesWithGrades.every(d => d.weight !== null)) {
+        // calculeaza media ponderata, normalizeaza cu total weight
         const totalWeight = deliverablesWithGrades.reduce((sum, d) => sum + d.weight, 0);
         
         if (totalWeight > 0) {
           const weightedSum = deliverablesWithGrades.reduce((sum, d) => {
             return sum + (d.averageGrade * d.weight);
           }, 0);
+          // normalizeaza cu total weight
           projectAverage = weightedSum / totalWeight;
+        } else {
+          // fallback la media simpla daca weight total 0
+          const sum = deliverablesWithGrades.reduce((acc, d) => acc + d.averageGrade, 0);
+          projectAverage = sum / deliverablesWithGrades.length;
         }
       } else {
-        // Simple average if not all have weights
+        // media simpla daca nu toate au weights
         const sum = deliverablesWithGrades.reduce((acc, d) => acc + d.averageGrade, 0);
         projectAverage = sum / deliverablesWithGrades.length;
       }
