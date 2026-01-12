@@ -1,20 +1,18 @@
-# 🎓 Platformă Web pentru Evaluarea Anonimă a Proiectelor Studenților
+# platforma evaluare proiecte studenti
 
-## 📌 Despre Proiect
+## despre proiect
 
-Aplicație web pentru gestionarea și evaluarea anonimă a proiectelor studenților, cu:
-- **Asignare aleatorie** de evaluatori
-- **Anonimitate completă** a evaluatorilor
-- **Calcul inteligent** al mediei (elimină notele extreme)
-- **Roluri diferențiate**: Student MP, Student Evaluator, Profesor
+aplicatie web pentru evaluare anonima proiecte studenti:
+- asignare random evaluatori
+- anonimitate completa
+- calcul medie (omite min si max)
+- roluri: student, profesor
 
----
-
-## 📂 Structura Repository
+## structura repo
 
 ```
 tehnologii-web-proiect/
-├── backend/              ← API Server (Node.js + Express + MySQL)
+├── backend/              
 │   ├── src/
 │   │   ├── controllers/
 │   │   ├── services/
@@ -22,295 +20,140 @@ tehnologii-web-proiect/
 │   │   ├── routes/
 │   │   ├── middleware/
 │   │   └── utils/
-│   ├── package.json
-│   └── README.md
+│   └── package.json
 │
-├── frontend/             ← Client Application (React)
+├── frontend/             
 │   ├── src/
 │   │   ├── components/
-│   │   ├── context/
 │   │   ├── pages/
-│   │   ├── services/
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── package.json
-│   └── README.md
+│   │   └── services/
+│   └── package.json
 │
-└── README.md            ← Acest fișier
+└── README.md
 ```
 
----
 
-## 🚀 Quick Start
 
-### Backend (ETAPA 2 - COMPLET ✅)
+## functionalitati
 
-```powershell
-cd backend
+### 1. autentificare
+- register si login cu jwt
+- 2 roluri: student si profesor
 
-# Citește instrucțiunile complete
-# Opțiunea 1: START_HERE.md (5 min read)
-# Opțiunea 2: INSTRUCTIUNI.md (ghid complet)
+### 2. proiecte
+- student creeaza un proiect
+- definire deliverables cu deadline
+- link video/demo
 
-# Instalare rapidă
-npm install
-npm run migrate
-npm run dev
+### 3. asignare evaluatori
+- selectie random din toti studentii
+- exclude membrii echipei
+- configurabil nr evaluatori (default 5)
+- asignare per deliverable
 
-# Server pornit pe http://localhost:3000
+### 4. sistem note
+- evaluator da note 1.00 - 10.00
+- poate modifica nota pana la deadline
+- calcul medie: elimina min si max apoi media
+- anonimitate totala
+
+### 5. dashboard-uri
+- student: creare proiect, deliverables, vedere medie
+- evaluator: proiecte asignate, da note
+- profesor: toate proiectele si notele
+
+## stack tehnologic
+
+### backend
+- node.js + express
+- sequelize orm
+- mysql
+- jwt auth
+- bcrypt
+
+### frontend
+- react 18
+- react router
+- axios
+- css simplu
+
+## arhitectura backend
+
+```
+├── routes       - endpoints
+├── controllers  - request/response
+├── services     - logica business
+├── models       - db schema
+├── middleware   - auth
+└── utils        - helper functions
 ```
 
-**📖 Documentație Backend:**
-- `START_HERE.md` - Sumar rapid și ghid de pornire
-- `INSTRUCTIUNI.md` - Tutorial pas cu pas
-- `LIVRABIL_ETAPA2.md` - Document prezentare completă
-- `CHECKLIST.md` - Verificare înainte de prezentare
-- `README.md` - Documentație generală API
+## baza de date
 
----
-
-## 📅 Timeline Proiect
-
-### ✅ Etapa 1 - 16.11.2025 (COMPLETAT)
-- [x] Specificații detaliate (`prompt-uman.txt`, `prompt-agent.txt`)
-- [x] Plan de proiect
-- [x] Repository Git creat
-- [x] Structură inițială
-
-### ✅ Etapa 2 - 06.12.2025 (COMPLETAT)
-- [x] Backend RESTful complet funcțional
-- [x] Toate endpoint-urile implementate
-- [x] Bază de date MySQL cu 5 tabele
-- [x] Autentificare JWT
-- [x] Asignare aleatorie evaluatori
-- [x] Calcul medie (elimină extreme)
-- [x] Anonimitate evaluatori
-- [x] Instrucțiuni complete de rulare
-- [x] Testabil în Postman
-
-### ✅ Etapa 3 - Finală (COMPLETAT)
-- [x] Frontend React complet
-- [x] Integrare backend + frontend
-- [x] Toate funcționalitățile testate
-- [ ] Deploy (backend + frontend) - optional
-- [x] Demo funcțional local
-
----
-
-## 🎯 Funcționalități Principale
-
-### 1. Autentificare & Roluri
-- Înregistrare și autentificare cu JWT
-- 2 roluri: **Student** și **Profesor**
-- Permisiuni diferite per rol
-
-### 2. Gestionare Proiecte
-- Student poate crea **UN proiect**
-- Definire livrabile (etape) cu deadline-uri
-- Upload link video/demo
-
-### 3. Asignare Evaluatori (★ CORE)
-- Selecție **ALEATORIE** din toți studenții
-- **EXCLUDE** automat membrii echipei proiectului
-- Configurabil număr evaluatori (default: 5)
-- Asignare per livrabil
-
-### 4. Sistem Note (★ CORE)
-- Evaluator acordă note **1.00 - 10.00**
-- Poate modifica nota **până la deadline**
-- Calcul medie: **elimină min și max**, apoi media
-- **Anonimitate totală**: profesorul NU vede identități
-
-### 5. Dashboard-uri per Rol
-- **Student MP**: Creare proiect, gestionare livrabile, vedere medie
-- **Evaluator**: Vezi proiecte asignate, acordă/modifică note
-- **Profesor**: Vezi toate proiectele și notele agregate
-
----
-
-## 🛠️ Stack Tehnologic
-
-### Backend
-- **Runtime**: Node.js 16+
-- **Framework**: Express.js
-- **ORM**: Sequelize
-- **DB**: MySQL
-- **Auth**: JWT + bcrypt
-- **Middleware**: CORS
-
-### Frontend (Etapa 3 - COMPLETAT)
-- **Framework**: React 18
-- **Routing**: React Router v6
-- **State**: Context API
-- **HTTP**: Axios
-- **Styling**: Clean CSS (minimal white theme)
-
----
-
-## 📊 Arhitectură
-
-### Backend Structure
 ```
-MVC Pattern + Services Layer
-├── Routes       → HTTP endpoints
-├── Controllers  → Request/Response handling
-├── Services     → Business logic
-├── Models       → Database schemas
-├── Middleware   → Auth & permissions
-└── Utils        → Helper functions
+users -> projects -> deliverables
+              |
+              +-> jury_assignments
+              |
+              +-> grades
 ```
 
-### Database Schema
-```
-Users ──┬─→ Projects ──┬─→ Deliverables
-        │               │
-        │               ├─→ JuryAssignments
-        │               │
-        └───────────────┴─→ Grades
-```
+## algoritm calcul medie
 
----
-
-## 🎓 Pentru Dezvoltatori
-
-### Pornire Dezvoltare Backend
-```powershell
-cd backend
-npm run dev     # Auto-reload cu nodemon
-```
-
-### Testare API
-```powershell
-# PowerShell script
-.\test-api.ps1
-
-# SAU Postman
-# Importă: Postman_Collection.json
-```
-
-### Bază de Date
-```sql
--- Creare DB
-CREATE DATABASE student_evaluation;
-
--- SAU rulează
-mysql -u root -p < database_schema.sql
-```
-
----
-
-## 📝 Documente Importante
-
-### Specificații
-- `prompt-uman.txt` - Descriere completă în română (cerințe, roluri, flow)
-- `prompt-agent.txt` - Specificații tehnice pentru implementare
-
-### Backend (Directorul `backend/`)
-- `START_HERE.md` - **ÎNCEPE AICI!** Sumar rapid
-- `INSTRUCTIUNI.md` - Tutorial instalare pas cu pas
-- `LIVRABIL_ETAPA2.md` - Prezentare completă Etapa 2
-- `CHECKLIST.md` - Verificare înainte de prezentare
-- `README.md` - Documentație API
-- `database_schema.sql` - Schema SQL manuală
-
----
-
-## 🔥 Highlights Tehnice
-
-### Algoritm Calcul Medie
 ```javascript
-// Input: [6.0, 7.5, 8.0, 8.5, 9.5]
-// Step 1: Elimină min (6.0) și max (9.5)
-// Step 2: Rămân [7.5, 8.0, 8.5]
-// Step 3: Media = (7.5 + 8.0 + 8.5) / 3 = 8.00
+// input: [6.0, 7.5, 8.0, 8.5, 9.5]
+// step 1: elimina min (6.0) si max (9.5)
+// step 2: raman [7.5, 8.0, 8.5]
+// step 3: media = (7.5 + 8.0 + 8.5) / 3 = 8.00
 ```
 
-### Algoritm Selecție Aleatorie
+## algoritm selectie random
+
 ```javascript
-// Input: projectId, deliverableId, count=5
-// Step 1: Get all students
-// Step 2: Exclude project.ownerId
-// Step 3: Shuffle (Fisher-Yates)
-// Step 4: Take first 5
-// Step 5: Insert in jury_assignments
+// input: projectId, deliverableId, count=5
+// step 1: ia toti studentii
+// step 2: exclude ownerul
+// step 3: shuffle cu fisher-yates
+// step 4: ia primii 5
+// step 5: insert in jury_assignments
 ```
 
-### Anonimitate Garantată
+## anonimitate
+
 ```javascript
-// ❌ NU se returnează NICIODATĂ:
+// nu se returneaza:
 {
   evaluatorId: 123,
-  evaluatorName: "John Doe"
+  evaluatorName: "john"
 }
 
-// ✅ Doar:
+// doar:
 {
   value: 8.75,
   submittedAt: "2025-12-05T10:30:00Z"
 }
 ```
 
----
+## timeline
 
-## 🤝 Contribuitori
-
-- **Nume Student**: [Numele tău]
-- **Grupă**: [Grupa ta]
-- **Profesor**: [Numele profesorului]
-- **Disciplină**: Tehnologii Web
-- **An Universitar**: 2024-2025
-
----
-
-## 📞 Contact & Suport
-
-Pentru probleme:
-1. Verifică `INSTRUCTIUNI.md` în directorul `backend/`
-2. Verifică `CHECKLIST.md` pentru troubleshooting
-3. Verifică issues în repository
-4. Contactează echipa
-
----
-
-## 📄 Licență
-
-Acest proiect este dezvoltat în scop educațional pentru cursul de Tehnologii Web.
-
----
-
-## 🎉 Status Proiect
-
-| Etapă | Deadline | Status |
+| etapa | deadline | status |
 |-------|----------|--------|
-| Etapa 1 | 16.11.2025 | ✅ COMPLETAT |
-| Etapa 2 | 06.12.2025 | ✅ COMPLETAT |
-| Etapa 3 | Finală | ✅ COMPLETAT |
+| etapa 1 | 16.11.2025 | done |
+| etapa 2 | 06.12.2025 | done |
+| etapa 3 | finala | done |
 
-**Ultima actualizare**: 05.12.2025
+## testare
 
----
-
-## 🚀 Quick Start - Aplicație Completă
-
-### Backend
+### backend
 ```powershell
 cd backend
-npm install
-npm run migrate
 npm run dev
 ```
 
-### Frontend (în alt terminal)
+### frontend
 ```powershell
 cd frontend
-npm install
 npm start
 ```
 
-### Testare Completă
-Citește `frontend/TESTARE.md` pentru flow complet de testare (15 minute).
-
----
-
-**🎉 APLICAȚIE COMPLETĂ ȘI FUNCȚIONALĂ!**
-**Ready for demo și prezentare finală!**
+aplicatia functionala si gata de folosit.
