@@ -135,7 +135,7 @@ function ProfessorDashboard() {
                         color: 'var(--gray-700)',
                         fontWeight: '600'
                       }}>
-                        📊 Metodă de calcul:
+                        Metodă de calcul:
                       </p>
                       <ul style={{ 
                         margin: '0', 
